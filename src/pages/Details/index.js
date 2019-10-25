@@ -8,9 +8,8 @@ import history from '~/services/history';
 export default function Details() {
   const { meetup } = history.location.state;
 
-
-  function handleEdit(meetup) {
-    history.push('/meetup', { meetup });
+  function handleEdit(data) {
+    history.push('/meetup', { data });
   }
 
   async function handleCancel(id) {
@@ -20,6 +19,20 @@ export default function Details() {
       toast.success('Meetup cancelado com sucesso!');
       history.push('/dashboard');
     } catch (err) {
+      let error = '';
+      switch (err.response.data.error) {
+        case 'User not authorized.':
+          error = 'Sem autorização!';
+          break;
+
+        case "Can't delete past meetups.":
+          error = 'não pode cancelar meetups passados!';
+          break;
+        default:
+          error = 'contate o suporte!';
+      }
+
+      toast.error(`Não foi possível cancelar o seu meetup, ${error}`);
       toast.error('Erro ao cancelar o Meetup!');
     }
   }
@@ -51,4 +64,3 @@ export default function Details() {
     </Container>
   );
 }
-

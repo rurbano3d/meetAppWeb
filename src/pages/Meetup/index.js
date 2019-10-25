@@ -29,8 +29,8 @@ export default function Meetup() {
 
   useEffect(() => {
     if (response) {
-      setMeetup(response.meetup);
-      setBanner(response.meetup.File);
+      setMeetup(response.data);
+      setBanner(response.data.File);
     }
   }, []);// eslint-disable-line
 
@@ -43,7 +43,25 @@ export default function Meetup() {
         toast.success('Editado com sucesso!');
         history.push('/');
       } catch (err) {
-        toast.error('Não foi possível editar o seu meetup!');
+        let error = '';
+        switch (err.response.data.error) {
+          case 'Validation fails':
+            error = 'Dados incorretos!';
+            break;
+          case 'User not authorized.':
+            error = 'Sem autorização!';
+            break;
+          case 'Meetup date invalid':
+            error = 'Data inválida!';
+            break;
+          case "Can't update past meetups.":
+            error = 'não pode atualizar meetups passados!';
+            break;
+          default:
+            error = 'contate o suporte!';
+        }
+
+        toast.error(`Não foi possível editar o seu meetup, ${error}`);
       }
     } else {
       try {
@@ -51,7 +69,20 @@ export default function Meetup() {
         toast.success('Salvo com sucesso!');
         history.push('/');
       } catch (err) {
-        toast.error('Não foi possível salvar o seu meetup!');
+        let error = '';
+        switch (err.response.data.error) {
+          case 'Validation fails':
+            error = 'Dados incorretos!';
+            break;
+          case 'Past dates are not permitted.':
+            error = 'não é permitido salvar com datas passadas!';
+            break;
+
+          default:
+            error = 'contate o suporte!';
+        }
+
+        toast.error(`Não foi possível salvar o seu meetup, ${error}`);
       }
     }
   }

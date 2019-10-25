@@ -59,7 +59,7 @@ export default function Meetup() {
   return (
     <Container>
       <Form schema={schema} initialData={meetup} onSubmit={handleSubmit}>
-        <ImageInput name="banner_id" imageFromData={banner} />
+        <ImageInput name="banner_id" />
         <Input name="title" placeholder="Título do Meetup" />
         <Input multiline name="description" placeholder="Descrição completa" />
         <DateTimePickerInput

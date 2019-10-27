@@ -24,17 +24,14 @@ const schema = Yup.object().shape({
 
 export default function Meetup() {
   const [meetup, setMeetup] = useState({});
-  const [banner, setBanner] = useState({});
+
   const response = history.location.state;
 
   useEffect(() => {
     if (response) {
       setMeetup(response.data);
-      setBanner(response.data.File);
     }
   }, []);// eslint-disable-line
-
-
 
   async function handleSubmit(data) {
     if (meetup.id) {
@@ -86,11 +83,12 @@ export default function Meetup() {
       }
     }
   }
-
+  console.tron.log(meetup.id);
   return (
     <Container>
       <Form schema={schema} initialData={meetup} onSubmit={handleSubmit}>
-        <ImageInput name="banner_id" />
+        {!meetup.id && <ImageInput name="banner_id" />}
+        {meetup.File && <ImageInput name="banner_id" />}
         <Input name="title" placeholder="Título do Meetup" />
         <Input multiline name="description" placeholder="Descrição completa" />
         <DateTimePickerInput

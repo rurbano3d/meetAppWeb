@@ -7,12 +7,11 @@ import api from '~/services/api';
 import { Container } from './styles';
 
 export default function ImageInput({ name }) {
-  const { defaultValue, registerField } = useField('image');
+  const { defaultValue, registerField } = useField('File');
   const [file, setFile] = useState(defaultValue && defaultValue.id);
   const [preview, setPreview] = useState(defaultValue && defaultValue.url);
-
   const ref = useRef();
-
+  console.tron.log(file);
   useEffect(() => {
     if (ref.current) {
       registerField({
